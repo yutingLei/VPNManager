@@ -8,12 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		84083E1B1F4D2056003C6C5C /* VPNManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 84083E191F4D2056003C6C5C /* VPNManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		84083E221F4D208C003C6C5C /* VPNManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84083E211F4D208C003C6C5C /* VPNManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		84083E161F4D2056003C6C5C /* VPNManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VPNManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84083E191F4D2056003C6C5C /* VPNManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPNManager.h; sourceTree = "<group>"; };
 		84083E1A1F4D2056003C6C5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84083E211F4D208C003C6C5C /* VPNManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPNManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +49,7 @@
 			isa = PBXGroup;
 			children = (
 				84083E191F4D2056003C6C5C /* VPNManager.h */,
+				84083E211F4D208C003C6C5C /* VPNManager.swift */,
 				84083E1A1F4D2056003C6C5C /* Info.plist */,
 			);
 			path = VPNManager;
@@ -95,6 +98,7 @@
 				TargetAttributes = {
 					84083E151F4D2056003C6C5C = {
 						CreatedOnToolsVersion = 8.3.3;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -131,6 +135,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84083E221F4D208C003C6C5C /* VPNManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +246,7 @@
 		84083E1F1F4D2056003C6C5C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -252,6 +258,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tomas.VPNManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -259,6 +266,7 @@
 		84083E201F4D2056003C6C5C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
