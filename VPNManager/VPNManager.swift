@@ -18,11 +18,15 @@ fileprivate typealias CompletionHander = (NETunnelProviderManager?, Error?) -> S
 
 public class VPNManager: NSObject {
 
-    //! Add observer for vpn status. (iOS >= 10.0)
+    //! 是否添加了观察者标志.
     fileprivate var isAddedObserver = false
 
-    //! Current VPN status. option nil.
-    var vpnStatus: NEVPNStatus? {
+    //! VPN描述(名称)，在手机系统中的显示名称和地址
+    fileprivate var vpnDescription = "MyVPN"
+    fileprivate var serverAddress = "MyVPN"
+
+    //! VPN状态，默认为nil
+    public var vpnStatus: NEVPNStatus? {
         didSet {
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: Notification.Name("kNotificationVPNStatusChanged"), object: nil)
@@ -30,26 +34,23 @@ public class VPNManager: NSObject {
         }
     }
 
-    /**
-     *  @function Singleton Instance
-     *
-     */
+    //! 单例
     static let shared = VPNManager()
 
-    /**
-     *  @function Init.
-     *
-     */
+    //! 初始化方法，默认获取当前VPN状态
     override init() {
         super.init()
         updateVPNStatus()
     }
 
-    /**
-     *  @function Start tunnel
-     *
-     **  @param  options        VPN profile
-     */
+    //! @function   设置VPN在系统中的显示名称和地址
+    func setDescription(_ text: String, serverAddress addressName: String) {
+        vpnDescription = text
+        serverAddress = addressName
+    }
+
+    //! @function 启动Tunnel
+    //! @param  options 启动参数，与ProviderManager中的options是同一个值
     func startTunnel(options: [String: NSObject]? = nil) {
         initializerOrCreateProviderManager {[unowned self] (manager, error) in
             if let manager = manager {
@@ -68,7 +69,7 @@ public class VPNManager: NSObject {
         }
     }
 
-    /// Stop tunnel
+    //! @function 关闭Tunnel
     func stopTunnel() {
         checkSystemProviderManager { (manager, error) in
             if let manager = manager {
@@ -81,10 +82,7 @@ public class VPNManager: NSObject {
 //MARK: - Manager Extension
 fileprivate extension VPNManager {
 
-    /**
-     *  @function Update VPN status.
-     *
-     */
+    //! @function   获取当前VPN的状态，仅在初始化对象时使用。
     func updateVPNStatus() {
         checkSystemProviderManager {[unowned self] (manager, error) in
             if let manager = manager {
@@ -102,15 +100,11 @@ fileprivate extension VPNManager {
         }
     }
 
-    /**
-     *  @function Create VPN manager if not exist. otherwise handler it
-     *
-     **  @param  completion     handler manager if needed
-     */
+    //! @function 初始化或创建Tunnel管理器
     func initializerOrCreateProviderManager(_ completion: @escaping CompletionHander) {
         NETunnelProviderManager.loadAllFromPreferences { (managers, error) in
 
-            /// check managers isEmpty
+            //! 系统没有VPN设置
             if let managers = managers {
                 var manager: NETunnelProviderManager
                 if managers.count > 0 {
@@ -119,15 +113,15 @@ fileprivate extension VPNManager {
                     manager = self.createProviderManager()
                 }
 
-                /// setting manager
+                //! 配置VPN
                 self.configurationProviderManager(&manager)
 
-                /// save manager
+                //! 保存配置
                 manager.saveToPreferences(completionHandler: { (error) in
                     if let error = error {
                         completion(nil, error)
                     } else {
-                        /// if no error. load current manager and with closure handler
+                        //! 保存后重新获取VPN配置管理器
                         manager.loadFromPreferences(completionHandler: { (error) in
                             if let error = error {
                                 completion(nil, error)
@@ -144,32 +138,22 @@ fileprivate extension VPNManager {
         }
     }
 
-    /**
-     *  @function Create a new VPN manager
-     *
-     */
+    //! @function   创建Tunnel管理器
     func createProviderManager() -> NETunnelProviderManager {
         let manager = NETunnelProviderManager()
         manager.protocolConfiguration = NETunnelProviderProtocol()
         return manager
     }
 
-    /**
-     *  @function Configuration for VPN manager
-     *
-     */
+    //! @function 配置Tunnel管理器
     func configurationProviderManager(_ manager: inout NETunnelProviderManager) {
         manager.isEnabled = true
         manager.isOnDemandEnabled = true
-        manager.localizedDescription = "<#YOUR_VPN_NAME_IN_SYSTEM#>"
-        manager.protocolConfiguration?.serverAddress = "<#YOUR_SERVER_ADDRESS#>"
+        manager.localizedDescription = vpnDescription
+        manager.protocolConfiguration?.serverAddress = serverAddress
     }
 
-    /**
-     *  @function Check system VPN manager. if exist and handler it or nil
-     *
-     **  @param  completion     handler manager if exist
-     */
+    //! @function 检车系统中是否存在VPN配置，如果有则返回，否则nil
     func checkSystemProviderManager(_ completion: @escaping CompletionHander) {
         NETunnelProviderManager.loadAllFromPreferences { (managers, error) in
             if let managers = managers {
