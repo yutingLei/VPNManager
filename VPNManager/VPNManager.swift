@@ -25,7 +25,7 @@ public class VPNManager: NSObject {
     fileprivate var vpnDescription = "MyVPN"
     fileprivate var serverAddress = "MyVPN"
 
-    //! VPN状态，默认为nil
+    // VPN状态，默认为nil
     public var vpnStatus: NEVPNStatus? {
         didSet {
             DispatchQueue.main.async {
@@ -43,14 +43,14 @@ public class VPNManager: NSObject {
         updateVPNStatus()
     }
 
-    //! @function   设置VPN在系统中的显示名称和地址
+    // @function   设置VPN在系统中的显示名称和地址
     func setDescription(_ text: String, serverAddress addressName: String) {
         vpnDescription = text
         serverAddress = addressName
     }
 
-    //! @function 启动Tunnel
-    //! @param  options 启动参数，与ProviderManager中的options是同一个值
+    // @function 启动Tunnel
+    // @param  options 启动参数，与ProviderManager中的options是同一个值
     func startTunnel(options: [String: NSObject]? = nil) {
         initializerOrCreateProviderManager {[unowned self] (manager, error) in
             if let manager = manager {
@@ -69,7 +69,7 @@ public class VPNManager: NSObject {
         }
     }
 
-    //! @function 关闭Tunnel
+    // @function 关闭Tunnel
     func stopTunnel() {
         checkSystemProviderManager { (manager, error) in
             if let manager = manager {
