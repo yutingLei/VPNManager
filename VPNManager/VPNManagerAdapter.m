@@ -7,6 +7,7 @@
 //
 
 #import "VPNManagerAdapter.h"
+#import <UIKit/UIKit.h>
 
 @interface VPNManagerAdapter ()
 @end
@@ -22,7 +23,7 @@
 #pragma mark Setter & Getter
 //! Description get & set
 - (NSString *)vpnDescription {
-    if (_vpnDescription) {
+    if (!_vpnDescription) {
         _vpnDescription = @"MyVPN";
     }
     return _vpnDescription;
@@ -35,7 +36,7 @@
 
 //! Server Address get & set
 - (NSString *)vpnServerAddress {
-    if (_vpnServerAddress) {
+    if (!_vpnServerAddress) {
         _vpnServerAddress = @"MyVPN";
     }
     return _vpnServerAddress;
